@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="Shift_JIS" standalone="yes" ?>
+
+<package>
+<job id="Daymakefile">
+<?job error="True" debug="True" ?>
+<script language="VBScript">
+<![CDATA[
+'このスクリプトは指定したプログラムを起動し、その終了を待って別に指定した
+Set objShell = WScript.CreateObject("WScript.Shell")
+'管理に関する帳簿用node.js
+'objShell.CurrentDirectory="C:\Documents and Settings\CH01\My Documents\node_autonoting"
+'objShell.Run "node.exe index.js", 0
+
+DIM exepath1(1)'インデックスの最後の数字と等しい。
+exepath1(1) = "C:\Unike\P-GATEi\App\PGateStart.exe 2720 CenterConnectData.dll CenterConnectData 1"
+exepath1(0) = "C:\Unike\P-GATEi\App\PGateStart.exe 2730 CasioConnectData.dll CasioConnectData 1"
+
+exedir1 = "C:\Unike\P-GATEi\App"
+
+'WScript.Echo "EXEing"
+'http://www.microsoft.com/japan/technet/scriptcenter/resources/qanda/feb05/hey0201.mspx
+'カレントディレクトリを実行ファイルのディレクトリにする
+objShell.CurrentDirectory = exedir1
+ 
+'http://msdn.microsoft.com/ja-jp/library/cc364421.aspx
+'open_exepath= chr(34)&chr(34)&chr(34) & open_exepath & chr(34)&chr(34)&chr(34)
+
+''一覧
+'Set objcmd = objShell.Exec("D:\Unike\P-GATE\App\PGateStart.exe 2130 LstManagement.dll LstPatientCame")
+'Do Until objShell.AppActivate(objcmd.ProcessID)
+' WScript.Sleep(500)
+'Loop
+' WScript.Sleep(500)
+'objShell.SendKeys "1"
+' WScript.Sleep(500)
+'objShell.SendKeys "{TAB}"
+' WScript.Sleep(500)
+'objShell.SendKeys "3"
+' WScript.Sleep(500)
+'''印刷しちゃうので本番以外コメントアウト
+'objShell.SendKeys "{F12}"
+' WScript.Sleep(5000)
+'Do Until objShell.AppActivate(objcmd.ProcessID)
+' WScript.Sleep(500)
+'Loop
+'objShell.SendKeys "{ESC}"
+'''WScript.Quit
+
+WScript.Sleep(1000)
+
+
+'objShell.Run exepath1 ,1,true
+For Each exepath In exepath1
+
+Set objcmd = objShell.Exec(exepath)
+'WScript.echo objcmd.ProcessID
+Do Until objShell.AppActivate(objcmd.ProcessID)
+ WScript.Sleep(500)
+Loop
+
+WScript.Sleep(1000)
+objShell.SendKeys "{F12}"
+WScript.Sleep(1000)
+objShell.SendKeys "{ENTER}"
+
+Do Until objShell.AppActivate("確認")
+ WScript.Sleep(500)
+Loop
+WScript.Sleep(1000)
+objShell.SendKeys "{ENTER}"
+WScript.Sleep(1000)
+objShell.SendKeys "{ESC}"
+
+Next
+
+
+WScript.Sleep(1000)
+objShell.CurrentDirectory = "C:\Program Files\CASIO\MPA_YHS_YK"
+Set objsendcmd = objShell.Exec("""C:\Program Files\CASIO\MPA_YHS_YK\DRJ.exe"" -fDRk_Day.xml -i1" )
+
+'Set objsendcmd = objShell.Exec("wscript.exe ""C:\Documents and Settings\CH01\デスクトップ\runandkill.wsf""")
+objShell.CurrentDirectory = "C:\Program Files\CASIO\本社送信業務"
+Set objsendcmd = objShell.Exec("C:\Program Files\CASIO\本社送信業務\sansed.exe")
+
+'ここはP-POSiではなくP-POS
+objShell.CurrentDirectory = "C:\Unike\P-POS\App"
+Set objsendcmd = objShell.Exec("C:\Unike\P-POS\App\PPInterfaceOutput.exe" )
+
+WScript.Echo "Finished DayMake"
+ WScript.Sleep(500)
+Do Until objShell.AppActivate("Windows Script Host")
+ WScript.Sleep(500)
+Loop
+
+]]>
+</script>
+</job>
+</package>

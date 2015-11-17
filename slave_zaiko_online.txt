@@ -1,0 +1,2 @@
+MPA_zaiko.exe,connect.xmlをコピー。
+コントロールパネルでODBCのセットアップを検索選択-システムDSNの設定を親機マネてコピー

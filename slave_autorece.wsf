@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="Shift_JIS" standalone="yes" ?>
+ 
+<package>
+<job id="Daymakefile">
+<?job error="True" debug="True" ?>
+<object id="objFs" progid="Scripting.FileSystemObject" />
+<script language="VBScript">
+<![CDATA[
+Set objShell = WScript.CreateObject("WScript.Shell")
+objShell.CurrentDirectory = "\\Ws01\P-GATEi\App\"
+WScript.Sleep(10000)
+Do While objShell.AppActivate("frmOpening")
+ WScript.Sleep(1000)
+Loop
+
+objShell.Exec("\\Ws01\P-GATEi\App\PCiMenu.exe")
+Do Until objShell.AppActivate("Menu the P-CUBEi")
+ WScript.Sleep(1000)
+Loop
+
+' WScript.Sleep(5000)
+objShell.Exec("\\Ws01\P-GATEi\App\PGateStartShoho.exe 1100 Acc.dll IptShohoMain")
+
+objShell.CurrentDirectory = objFs.BuildPath(objShl.SpecialFolders("Desktop")
+WScript.Sleep(5000)
+objShell.Exec("C:\Users\CH02\Desktop\MPA_ZAIKO.exe")
+
+]]>
+</script>
+</job>
+</package>

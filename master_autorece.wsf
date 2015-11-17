@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="Shift_JIS" standalone="yes" ?>
+ 
+<package>
+<job id="Daymakefile">
+<?job error="True" debug="True" ?>
+<script language="VBScript">
+<![CDATA[
+Set objShell = WScript.CreateObject("WScript.Shell")
+objShell.CurrentDirectory = "C:\Unike\P-GATEi\App\"
+WScript.Sleep(10000)
+Do While objShell.AppActivate("frmOpening")
+ WScript.Sleep(1000)
+Loop
+
+objShell.Exec("C:\Unike\P-GATEi\App\PCiMenu.exe")
+Do Until objShell.AppActivate("Menu the P-CUBEi")
+ WScript.Sleep(1000)
+Loop
+
+' WScript.Sleep(5000)
+objShell.Exec("C:\Unike\P-GATEi\App\PGateStartShoho.exe 1100 Acc.dll IptShohoMain")
+]]>
+</script>
+</job>
+</package>

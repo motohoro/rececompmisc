@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="Shift_JIS" standalone="yes" ?>
+ 
+<package>
+<job id="Monthmakefile">
+<?job error="True" debug="True" ?>
+<script language="VBScript">
+<![CDATA[
+Set objShell = WScript.CreateObject("WScript.Shell")
+
+exedir1 = "C:\Unike\P-GATEi\App"
+
+'http://www.microsoft.com/japan/technet/scriptcenter/resources/qanda/feb05/hey0201.mspx
+'カレントディレクトリを実行ファイルのディレクトリにする
+objShell.CurrentDirectory = exedir1
+
+'月次集計
+Set objcmd = objShell.Exec("C:\Unike\P-GATEi\App\PGateStart.exe 5900 StockMonthlyTotal.dll StockMonthlyTotal")
+''Set objcmd = objShell.Run("D:\Unike\P-GATEi\App\PGateStart.exe 5900 StockMonthlyTotal.dll StockMonthlyTotal",,TRUE)
+Do Until objShell.AppActivate(objcmd.ProcessID)
+ WScript.Sleep(500)
+Loop
+WScript.Sleep(300)
+objShell.SendKeys "{F12}"
+WScript.Sleep(500)
+Do Until objShell.AppActivate("集計確認")
+ WScript.Sleep(500)
+Loop
+WScript.Sleep(500)
+objShell.SendKeys "{ENTER}"
+Do Until objShell.AppActivate("確認")
+ WScript.Sleep(500)
+Loop
+WScript.Sleep(500)
+objShell.SendKeys "{ENTER}"
+''WScript.Sleep(1000)
+''objShell.SendKeys "{ESC}"
+WScript.Echo "集計終わったらＯＫ"
+
+DIM exepath1(1)'インデックスの最後の数字と等しい。
+exepath1(0) = "C:\Unike\P-GATEi\App\PGateStart.exe 2725 CenterConnectData.dll CenterConnectData 2"
+exepath1(1) = "C:\Unike\P-GATEi\App\PGateStart.exe 2732 CasioConnectData.dll CasioConnectData 2"
+
+Dim strDate,i
+strDate=Date
+strDate = DateAdd("m",-1,strDate)
+dim preyear,premonth
+preyear = Year(strDate)-1988
+premonth = Right("0" & Month(strDate),2)
+ 
+''本部連動月次
+'''' For Each exepath In exepath1
+For i=0 To 1
+''Set objcmd = objShell.Exec(exepath1)
+Set objcmd = objShell.Exec(exepath1(i))
+'WScript.echo objcmd.ProcessID
+Do Until objShell.AppActivate(objcmd.ProcessID)
+ WScript.Sleep(500)
+Loop
+If i=1 Then
+WScript.Sleep(1000)
+objShell.SendKeys(preyear)
+objShell.SendKeys(premonth)
+End If
+WScript.Sleep(1000)
+objShell.SendKeys "{F12}"
+WScript.Sleep(1000)
+objShell.SendKeys "{ENTER}"
+
+Do Until objShell.AppActivate("確認")
+ WScript.Sleep(500)
+Loop
+WScript.Sleep(1000)
+objShell.SendKeys "{ENTER}"
+WScript.Sleep(1000)
+objShell.SendKeys "{ESC}"
+
+Next
+
+WScript.Sleep(1000)
+objShell.CurrentDirectory = "C:\Program Files\CASIO\MPA_YHS_YK"
+Set objsendcmd = objShell.Exec("""C:\Program Files\CASIO\MPA_YHS_YK\DRJ.exe"" -fDRk_Month.xml -i1" )
+
+WScript.Echo "Finished DayMake"
+ WScript.Sleep(500)
+Do Until objShell.AppActivate("Windows Script Host")
+ WScript.Sleep(500)
+Loop
+
+]]>
+</script>
+</job>
+</package>
